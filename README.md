@@ -17,8 +17,8 @@
 - через модуль DMA (`#define USE_DMA` должен быть раскомментирован)
 
 В папке `Waveforms` лежат осциллограммы для двух варинтов передачи данных.
-- `USART without DMA.png` - передача по USART осуществляется через процессор.
-- `USART with DMA.png` - передача по USART осуществляется через модуль DMA.
+- [USART without DMA.png](https://github.com/Leonidov/STM32-Labs/blob/master/Lab%202%20-%20UART+DMA/Waveforms/USART%20with%20DMA.png?raw=true) - передача по USART осуществляется через процессор.
+- [USART with DMA.png](https://github.com/Leonidov/STM32-Labs/blob/master/Lab%202%20-%20UART+DMA/Waveforms/USART%20with%20DMA.png?raw=true) - передача по USART осуществляется через модуль DMA.
 
 На двух картинках:
 - **Канал А (синий)** - сигнал на выводе PD7 (светодиод LED1)
