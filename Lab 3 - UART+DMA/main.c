@@ -1,3 +1,20 @@
+/**
+  ******************************************************************************
+  * @file    main.c
+  * @author  Vladimir Leonidov
+  * @version V1.0.0
+  * @date    06.12.2015
+  * @brief   Лабораторная работа №3 - "USART, DMA"
+  *			 Отладочная плата: STM32F10C-EVAL
+  *
+  *			 Реализован отправка и приём данных по USART.
+  *			 Возможны два варианта передачи данных:
+  *			   - через процессор (#define USE_DMA в файле main.h должен быть закомментирован)
+  *			   - через модуль DMA (#define USE_DMA в файле main.h должен быть раскомментирован)
+  *
+  ******************************************************************************
+  */
+
 #include "main.h"
 
 char RxBuffer[RX_BUFF_SIZE];					//Буфер приёма USART
@@ -32,14 +49,20 @@ void USART2_IRQHandler(void)
   */
 void initPorts(void)
 {
+	//Включить тактирование порта GPIOD
 	RCC->APB2ENR |= RCC_APB2ENR_IOPDEN;
 	
-	GPIOD->CRL = 0;
-	GPIOD->CRH = 0;
-	GPIOD->CRL |= GPIO_CRL_MODE4_1;				//LD4, выход 2МГц
-	GPIOD->CRL |= GPIO_CRL_MODE3_1;				//LD3, выход 2МГц
-	GPIOD->CRH |= GPIO_CRH_MODE13_1;			//LD2, выход 2МГц
-	GPIOD->CRL |= GPIO_CRL_MODE7_1;				//LD1, выход 2МГц	
+	// Сбрасываем биты конфигурации портов...
+	GPIOD->CRL &= ~(GPIO_CRL_MODE4 | GPIO_CRL_CNF4);
+	GPIOD->CRL &= ~(GPIO_CRL_MODE3 | GPIO_CRL_CNF3);
+	GPIOD->CRL &= ~(GPIO_CRL_MODE7 | GPIO_CRL_CNF7);
+	GPIOD->CRH &= ~(GPIO_CRH_MODE13 | GPIO_CRH_CNF13);
+	
+	//...и выставляем так, как нам нужно
+	GPIOD->CRL |= GPIO_CRL_MODE4_1;		//LD4, выход 2МГц
+	GPIOD->CRL |= GPIO_CRL_MODE3_1;		//LD3, выход 2МГц
+	GPIOD->CRH |= GPIO_CRH_MODE13_1;	//LD2, выход 2МГц
+	GPIOD->CRL |= GPIO_CRL_MODE7_1;		//LD1, выход 2МГц	
 }
 
 /**
