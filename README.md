@@ -29,8 +29,8 @@
 - 1 стоп-бит.
 
 В папке `Waveforms` лежат осциллограммы для двух варинтов передачи данных.
-- [USART without DMA.png](blob/master/Lab%203%20-%20UART%2BDMA/Waveforms/USART%20without%20DMA.png) - передача по USART осуществляется через процессор.
-- [USART with DMA.png](blob/master/Lab%203%20-%20UART%2BDMA/Waveforms/USART%20with%20DMA.png) - передача по USART осуществляется через модуль DMA.
+- [USART without DMA.png](Lab%203%20-%20UART%2BDMA/Waveforms/USART%20without%20DMA.png) - передача по USART осуществляется через процессор.
+- [USART with DMA.png](Lab%203%20-%20UART%2BDMA/Waveforms/USART%20with%20DMA.png) - передача по USART осуществляется через модуль DMA.
 
 На двух картинках:
 - **Канал А (синий)** - сигнал на выводе **PD7** (светодиод **LED1**).
@@ -65,11 +65,11 @@
   - `DAC_Sine - Swift.playground` - playground для Xcode (язык Swift);
   - `DAC_Sine - MATLAB.m` - скрипт Matlab. Генерирует только числовые значения.
 - **Waweforms** - содержит осциллограммы с выхода ЦАП:
-  - [Command U 1.5.png](blob/master/Lab%205%20-%20DAC/Waveforms/Command%20U%201.5.png) - постоянное напряжение 1.5В (команда `U 1.5`).
-  - [Command SIN 200.png](blob/master/Lab%205%20-%20DAC/Waveforms/Command%20SIN%20200.png) - синусоида, *TIM6->ARR = 200* (команда `SIN 200`).
-  - [Command SIN 1500.png](blob/master/Lab%205%20-%20DAC/Waveforms/Command%20SIN%201500.png) - синусоида, *TIM6->ARR = 1500* (команда `SIN 1500`).
-  - [Command TRIANGLE 1.png](blob/master/Lab%205%20-%20DAC/Waveforms/Command%20TRIANGLE%201.png) - треугольный сигнал, *TIM6->ARR = 1* (команда `TRIANGLE 1`).
-  - [Command TRIANGLE 5.png](blob/master/Lab%205%20-%20DAC/Waveforms/Command%20TRIANGLE%205.png) - треугольный сигнал, *TIM6->ARR = 5* (команда `TRIANGLE 5`).
+  - [Command U 1.5.png](Lab%205%20-%20DAC/Waveforms/Command%20U%201.5.png) - постоянное напряжение 1.5В (команда `U 1.5`).
+  - [Command SIN 200.png](Lab%205%20-%20DAC/Waveforms/Command%20SIN%20200.png) - синусоида, *TIM6->ARR = 200* (команда `SIN 200`).
+  - [Command SIN 1500.png](Lab%205%20-%20DAC/Waveforms/Command%20SIN%201500.png) - синусоида, *TIM6->ARR = 1500* (команда `SIN 1500`).
+  - [Command TRIANGLE 1.png](Lab%205%20-%20DAC/Waveforms/Command%20TRIANGLE%201.png) - треугольный сигнал, *TIM6->ARR = 1* (команда `TRIANGLE 1`).
+  - [Command TRIANGLE 5.png](Lab%205%20-%20DAC/Waveforms/Command%20TRIANGLE%205.png) - треугольный сигнал, *TIM6->ARR = 5* (команда `TRIANGLE 5`).
 - **Project** - сам проект программы.
 
 Система команд по интерфейсу UART:
