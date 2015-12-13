@@ -99,9 +99,9 @@ void initUART2_DMA(void)
   */
 void initADC1_Regular(void)
 {
-	RCC->APB2ENR |= RCC_APB2ENR_IOPDEN;					//Включить тактирование порта GPIOC
+	RCC->APB2ENR |= RCC_APB2ENR_IOPCEN;					//Включить тактирование порта GPIOC
 	
-	GPIOC->CRL &= ~(GPIO_CRL_MODE4 | GPIO_CRL_CNF0);	//PC4 на вход
+	GPIOC->CRL &= ~(GPIO_CRL_MODE4 | GPIO_CRL_CNF4);	//PC4 на вход
 	
 	RCC->APB2ENR |= RCC_APB2ENR_ADC1EN;  				//Включить тактирование АЦП
 

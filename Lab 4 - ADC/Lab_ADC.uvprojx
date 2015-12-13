@@ -373,7 +373,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath></IncludePath>
+              <IncludePath>.\RTE</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>

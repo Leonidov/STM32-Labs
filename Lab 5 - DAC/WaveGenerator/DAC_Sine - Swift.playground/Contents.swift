@@ -15,8 +15,8 @@ func ^^ (radix: Int, power: Int) -> Double {
     return Double(pow(Double(radix), Double(power)))
 }
 
-let nextpow=ceil(log2(Double(bits)))    //ищем степень двойки
-let resolution=Int(pow(2,nextpow))      //получаем разрядность одного регистра
+let nextpow = ceil(log2(Double(bits)))    //ищем степень двойки
+let resolution = Int(pow(2, nextpow))     //получаем разрядность одного регистра
 
 //Объявление переменной
 print("uint\(resolution)_t \(array_name)[\(points)] = {", terminator: "")
