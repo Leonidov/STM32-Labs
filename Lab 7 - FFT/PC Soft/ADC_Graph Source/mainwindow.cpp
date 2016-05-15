@@ -35,10 +35,6 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         QString pname=portList[i].portName();
 
-        #ifdef Q_OS_MAC
-        pname.prepend("cu.");
-        #endif
-
         ui->PortsBox->addItem(pname);
     }
 
