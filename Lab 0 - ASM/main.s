@@ -19,16 +19,17 @@ Reset_Handler	PROC
 init
 	MOV32	R0, PERIPH_BB_BASE + \
 			RCC_APB2ENR * 32 + \
-			5 * 4										; вычисляем адрес для BitBanding 5-го бита регистра RCC_APB2ENR
-														; BitAddress = BitBandBase + (RegAddr * 32) + BitNumber * 4
-	MOV		R1, #1										; включаем тактирование порта D (в 5-й бит RCC_APB2ENR пишем '1`)
-	STR 	R1, [R0]									; загружаем это значение
+			5 * 4						; вычисляем адрес для BitBanding 5-го бита регистра RCC_APB2ENR
+										; BitAddress = BitBandBase + (RegAddr * 32) + BitNumber * 4
+	MOV		R1, #1						; включаем тактирование порта D (в 5-й бит RCC_APB2ENR пишем '1`)
+	STR 	R1, [R0]					; загружаем это значение
 	
-	MOV32	R0, GPIOD_CRL								; адрес порта
-	MOV		R1, #(GPIO_CRL_MODE0_0 + GPIO_CRL_MODE0_1)	; 4-битная маска настроек для Output mode 50mHz, Push-Pull
-	LDR		R3, [R0]									; считать порт
-    BFI		R3, R1, #28, #4    							; скопировать биты маски в позицию PIN7
-    STR		R3, [R0]									; загрузить результат в регистр настройки порта
+	MOV32	R0, GPIOD_CRL				; адрес порта
+	MOV		R1, #(GPIO_CRL_MODE0_0 + \
+			GPIO_CRL_MODE0_1)			; 4-битная маска настроек для Output mode 50mHz, Push-Pull
+	LDR		R3, [R0]					; считать порт
+    BFI		R3, R1, #28, #4    			; скопировать биты маски в позицию PIN7
+    STR		R3, [R0]					; загрузить результат в регистр настройки порта
 
 ; Основной цикл
 loop
@@ -59,5 +60,4 @@ delay_loop
 	BNE		delay_loop					; переход, если Z==0 (результат вычитания не равен нулю)
 	BX		LR							; выход из подпрограммы (переход к адресу в регистре LR - вершина стека)
 	
-
     END
