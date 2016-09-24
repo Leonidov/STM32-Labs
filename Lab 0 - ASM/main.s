@@ -14,6 +14,7 @@
 
 ; Начало программы
 Reset_Handler	PROC
+	EXPORT  Reset_Handler
 
 ; Подпрограмма инициализации
 init
@@ -25,8 +26,7 @@ init
 	STR 	R1, [R0]					; загружаем это значение
 	
 	MOV32	R0, GPIOD_CRL				; адрес порта
-	MOV		R1, #(GPIO_CRL_MODE0_0 + \
-			GPIO_CRL_MODE0_1)			; 4-битная маска настроек для Output mode 50mHz, Push-Pull
+	MOV		R1, #0x03					; 4-битная маска настроек для Output mode 50mHz, Push-Pull ("0011")
 	LDR		R3, [R0]					; считать порт
     BFI		R3, R1, #28, #4    			; скопировать биты маски в позицию PIN7
     STR		R3, [R0]					; загрузить результат в регистр настройки порта
