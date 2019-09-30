@@ -23,8 +23,13 @@ int main(void)
 {
 	RCC->APB2ENR |= RCC_APB2ENR_IOPDEN;	//включить тактирование GPIOD
 	
-	GPIOD->CRL = 0;						//очистка регистров конфигурации..
-	GPIOD->CRH = 0;						//..портов ввода/вывода
+	//очистка полей
+	GPIOD->CRL &= ~(GPIO_CRL_CNF3 | GPIO_CRL_MODE3);
+	GPIOD->CRL &= ~(GPIO_CRL_CNF4 | GPIO_CRL_MODE4);
+	GPIOD->CRL &= ~(GPIO_CRL_CNF7 | GPIO_CRL_MODE7);
+	GPIOD->CRH &= ~(GPIO_CRH_CNF13 | GPIO_CRH_MODE13);
+	
+	//и конфигурация
 	GPIOD->CRL |= GPIO_CRL_MODE4_1;		//LD4, выход 2МГц
 	GPIOD->CRL |= GPIO_CRL_MODE3_1;		//LD3, выход 2МГц
 	GPIOD->CRH |= GPIO_CRH_MODE13_1;	//LD2, выход 2МГц
