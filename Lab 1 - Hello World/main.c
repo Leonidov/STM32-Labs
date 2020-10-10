@@ -59,7 +59,5 @@ int main(void)
   */
 void delay(uint32_t takts)
 {
-	uint32_t i;
-	
-	for (i = 0; i < takts; i++) {};
+	for (uint32_t i = 0; i < takts; i++) {};
 }

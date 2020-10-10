@@ -27,10 +27,7 @@ void TIM6_IRQHandler(void)
 {
 	TIM6->SR &= ~TIM_SR_UIF;			//Сброс флага переполнения
 	
-	if (LED2_IS_ON())					//Если светодиод LED2 включен,
-		LED2_OFF();						//выключаем.
-	else								//Если нет - 
-		LED2_ON();						//включаем!
+	LED2_SWAP();
 }
 
 /**
@@ -46,13 +43,10 @@ void EXTI9_5_IRQHandler(void)
 	// нужно проверить, кто из них его вызвал.
 	if (EXTI->PR & EXTI_PR_PR9) 		// нас интересует EXTI9
 	{
+		EXTI->PR |= EXTI_PR_PR9;		//Сбрасываем флаг прерывания установкой бита в '1'
 		delay(1000000);					//Задержка для защиты от дребезга контактов
 		
-		if (LED3_IS_ON())				//Если светодиод LED3 включен,
-			LED3_OFF();					//выключаем.
-		else							//Если нет - 
-			LED3_ON();					//выключаем!
-		
+		LED3_SWAP();
 		EXTI->PR |= EXTI_PR_PR9;		//Сбрасываем флаг прерывания установкой бита в '1'
 	}
 }
@@ -74,10 +68,10 @@ void initPorts(void)
 	GPIOD->CRH &= ~(GPIO_CRH_MODE13 | GPIO_CRH_CNF13);
 	
 	//...и выставляем так, как нам нужно
-	GPIOD->CRL |= GPIO_CRL_MODE4_1;		//LD4, выход 2МГц
-	GPIOD->CRL |= GPIO_CRL_MODE3_1;		//LD3, выход 2МГц
-	GPIOD->CRH |= GPIO_CRH_MODE13_1;	//LD2, выход 2МГц
-	GPIOD->CRL |= GPIO_CRL_MODE7_1;		//LD1, выход 2МГц	
+	GPIOD->CRL |= GPIO_CRL_MODE4_1;			//LD4, выход 2МГц
+	GPIOD->CRL |= GPIO_CRL_MODE3_1;			//LD3, выход 2МГц
+	GPIOD->CRH |= GPIO_CRH_MODE13_1;		//LD2, выход 2МГц
+	GPIOD->CRL |= GPIO_CRL_MODE7_1;			//LD1, выход 2МГц	
 }
 
 /**
@@ -119,16 +113,16 @@ void initButton(void)
   */
 void initTIM6(void)
 {
-	RCC->APB1ENR |= RCC_APB1ENR_TIM6EN;	//Включить тактирование TIM6
+	RCC->APB1ENR |= RCC_APB1ENR_TIM6EN;		//Включить тактирование TIM6
 	
 	//Частота APB1 для таймеров = APB1Clk * 2 = 36МГц * 2 = 72МГц
-	TIM6->PSC = 36000-1;				//Предделитель частоты (72МГц/36000 = 2кГц)
-	TIM6->ARR = 2000-1;					//Модуль счёта таймера (2кГц/2000 = 1с)
-	TIM6->DIER |= TIM_DIER_UIE;			//Разрешить прерывание по переполнению таймера
-	TIM6->CR1 |= TIM_CR1_CEN;			//Включить таймер
+	TIM6->PSC = 36000-1;					//Предделитель частоты (72МГц/36000 = 2кГц)
+	TIM6->ARR = 2000-1;						//Модуль счёта таймера (2кГц/2000 = 1с)
+	TIM6->DIER |= TIM_DIER_UIE;				//Разрешить прерывание по переполнению таймера
+	TIM6->CR1 |= TIM_CR1_CEN;				//Включить таймер
 	
-	NVIC_EnableIRQ(TIM6_IRQn);			//Рарзрешить прерывание от TIM6
-	NVIC_SetPriority(TIM6_IRQn, 1);		//Выставляем приоритет
+	NVIC_EnableIRQ(TIM6_IRQn);				//Рарзрешить прерывание от TIM6
+	NVIC_SetPriority(TIM6_IRQn, 1);			//Выставляем приоритет
 }
 
 /**
@@ -145,10 +139,10 @@ int main(void)
 	
 	/*Основной цикл*/
 	while(true) {
-		LED1_ON();						//включить первый светодиод
-		delay(DELAY_VAL);				//вызов подпрограммы задержки
-		LED1_OFF();						//выключить первый светодиод
-		delay(DELAY_VAL);				//вызов подпрограммы задержки		
+		LED1_ON();							//включить первый светодиод
+		delay(DELAY_VAL);					//вызов подпрограммы задержки
+		LED1_OFF();							//выключить первый светодиод
+		delay(DELAY_VAL);					//вызов подпрограммы задержки		
 	}
 }
 
@@ -159,7 +153,5 @@ int main(void)
   */
 void delay(uint32_t takts)
 {
-	uint32_t i;
-	
-	for (i = 0; i < takts; i++) {};
+	for (uint32_t i = 0; i < takts; i++) {};
 }

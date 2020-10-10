@@ -9,35 +9,35 @@
 	; Таблица векторов прерываний
 	DCD STACK_TOP						; Указатель на вершину стека
 	DCD Reset_Handler					; Вектор сброса
-
+	; ...
+	; Тут должны быть векторы прерываний
+	; ...
+	
 	ENTRY								; Точка входа в программу
 
 Reset_Handler	PROC					; Вектор сброса
-	EXPORT  Reset_Handler				; Делаем Reset_Handler видимым вне этого файла
-
-main									; Основная подпрограмма
 	MOV32	R0, PERIPH_BB_BASE + \
-			RCC_APB2ENR * 32 + \
+			(RCC_APB2ENR-PERIPH_BASE) * 32 + \
 			5 * 4						; вычисляем адрес для BitBanding 5-го бита регистра RCC_APB2ENR
 										; BitAddress = BitBandBase + (RegAddr * 32) + BitNumber * 4
 	MOV		R1, #1						; включаем тактирование порта D (в 5-й бит RCC_APB2ENR пишем '1`)
 	STR 	R1, [R0]					; загружаем это значение
 	
 	MOV32	R0, GPIOD_CRL				; адрес порта
-	MOV		R1, #0x03					; 4-битная маска настроек для Output mode 50mHz, Push-Pull ("0011")
+	MOV		R1, #2_0011					; 4-битная маска настроек для Output mode 50mHz, Push-Pull ("0011")
 	LDR		R2, [R0]					; считать порт
     BFI		R2, R1, #28, #4    			; скопировать биты маски в позицию PIN7
     STR		R2, [R0]					; загрузить результат в регистр настройки порта
 
-loop									; Бесконечный цикл
     MOV32	R0, GPIOD_BSRR				; адрес порта выходных сигналов
 
-	MOV 	R1, #(PIN7)					; устанавливаем вывод в '1'
+loop									; Бесконечный цикл
+	MOV32 	R1, #(PIN7)					; устанавливаем вывод в '1'
 	STR 	R1, [R0]					; загружаем в порт
 	
 	BL		delay						; задержка
 	
-	MOV		R1, #(PIN7 << 16)			; сбрасываем в '0'
+	MOV32	R1, #(PIN7 << 16)			; сбрасываем в '0'
 	STR 	R1, [R0]					; загружаем в порт
 	
 	BL		delay						; задержка
