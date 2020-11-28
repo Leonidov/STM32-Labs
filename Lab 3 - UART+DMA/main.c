@@ -96,8 +96,6 @@ void initUART2(void)
 	*****************************************/
 	USART2->BRR = 0x138;
 	
-	USART2->CR2 = 0;
-	USART2->CR1 = 0;
 	USART2->CR1 |= USART_CR1_RE | USART_CR1_TE | USART_CR1_UE;
 	USART2->CR1 |= USART_CR1_RXNEIE;				//разрешить прерывание по приему байта данных
 	

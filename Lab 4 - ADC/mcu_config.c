@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    mcu_config.c
   * @author  Vladimir Leonidov
-  * @version V1.0.0
-  * @date    07.12.2015
+  * @version V1.0.1
+  * @date    28.11.2020
   * @brief   Подпрограммы инициализации и настройки периферии микроконтроллера.
   *
   ******************************************************************************
@@ -64,9 +64,7 @@ void initUART2(void)
 	4. Итого 0x138
 	*****************************************/
 	USART2->BRR = 0x138;
-	
-	USART2->CR2 = 0;
-	USART2->CR1 = 0;
+
 	USART2->CR1 |= USART_CR1_RE | USART_CR1_TE | USART_CR1_UE;
 	USART2->CR1 |= USART_CR1_RXNEIE;				//разрешить прерывание по приему байта данных
 	
@@ -84,7 +82,6 @@ void initUART2_DMA(void)
 	
 	DMA1_Channel7->CPAR = (uint32_t)&USART2->DR;	//указатель на регистр данных USART2
 	
-	DMA1_Channel7->CCR = 0;
 	DMA1_Channel7->CCR |= DMA_CCR7_DIR;				//направление - из памяти в устройство
 	DMA1_Channel7->CCR |= DMA_CCR7_MINC;			//инкремент указателя в памяти	
 	USART2->CR3 |= USART_CR3_DMAT;					//настроить USART2 на работу с DMA
@@ -104,11 +101,6 @@ void initADC1_Regular(void)
 	GPIOC->CRL &= ~(GPIO_CRL_MODE4 | GPIO_CRL_CNF4);	//PC4 на вход
 	
 	RCC->APB2ENR |= RCC_APB2ENR_ADC1EN;  				//Включить тактирование АЦП
-
-	ADC1->CR1 = 0;										//Обнуляем конфигурационные регистры
-	ADC1->CR2 = 0;										//...
-	ADC1->SQR1 = 0;										//...
-	ADC1->SQR2 = 0;										//...
 	
 	//Настройка времени преобразования каналов
 	ADC1->SMPR1 |= ADC_SMPR1_SMP14;						//Канал 14 - 239.5 тактов
@@ -118,6 +110,7 @@ void initADC1_Regular(void)
 	ADC1->CR2 |= ADC_CR2_EXTSEL;       					//Выбрать в качестве источника запуска SWSTART
 	ADC1->CR2 |= ADC_CR2_EXTTRIG;      					//Разрешить внешний запуск регулярного канала
 	ADC1->CR2 |= ADC_CR2_ADON;         					//Включить АЦП
+	
 	Delay(5);											//Задержка перед калибровкой
 	ADC1->CR2 |= ADC_CR2_CAL;							//Запуск калибровки
 	while (!(ADC1->CR2 & ADC_CR2_CAL)){};	 			//Ожидание окончания калибровки
@@ -130,7 +123,7 @@ void initADC1_Regular(void)
   */
 void Delay(uint32_t takts)
 {
-	uint32_t i;
+	volatile uint32_t i;
 	
 	for (i = 0; i < takts; i++) {};
 }

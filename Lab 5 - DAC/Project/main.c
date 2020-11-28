@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    main.c
   * @author  Vladimir Leonidov
-  * @version V1.0.0
-  * @date    09.12.2015
+  * @version V1.0.1
+  * @date    28.11.2020
   * @brief   Лабораторная работа №5 - "ЦАП"
   *			 Отладочная плата: STM32F10C-EVAL
   *
@@ -45,22 +45,6 @@ void USART2_IRQHandler(void)
 }
 
 /**
-  * @brief  Чтение результата АЦПирования
-  * @param  n - номер канала
-  * @retval Результат измерения в "попугаях" шкалы АЦП:
-  * 		4095 - 3.3В
-  *			   0 - 0.0В
-  */
-uint16_t Read_ADC(uint8_t n)
-{ 
-	ADC1->SQR3 = n;									//Записываем номер канала в регистр SQR3
-	ADC1->SR &= ~ADC_SR_EOC;						//Сбрасываем флаг окончания преобразования
-	ADC1->CR2 |= ADC_CR2_SWSTART;					//Запускаем преобразование в регулярном канале   
-	while(!(ADC1->SR & ADC_SR_EOC)){};				//Ждем окончания преобразования
-	return ADC1->DR;								//Читаем результат
-}
-
-/**
   * @brief  Передача строки по USART2 с помощью DMA
   * @param  str - Указатель на строку
   * @retval None
@@ -94,11 +78,8 @@ void ExecuteCommand(void)
 		strcpy(TxBuffer,"Lab 5 - DAC");				//Она самая, возвращаем строку идентификации	
 	}
 	else if (strncmp(RxBuffer,"U",1)==0)			//Команда установки постояннного напряжения
-	{
-		//удаляем "DAC" из буфера приёма
-		memmove(RxBuffer, RxBuffer+1, strlen(RxBuffer)-1+1);
-		
-		sscanf(RxBuffer,"%f", &F);					//преобразуем строку в float
+	{	
+		sscanf(RxBuffer,"%*s %f", &F);				//преобразуем строку в float
 		
 		if ((0 <= F) && (F <= V_REF))
 		{
@@ -115,14 +96,11 @@ void ExecuteCommand(void)
 			strcpy(TxBuffer,"Out of Range");		//если значение больше, чем опорное, возвращаем ошибку
 	}
 	else if (strncmp(RxBuffer,"SIN",3)==0)			//Команда генерирования синусоиды
-	{
-		//удаляем "SIN" из буфера приёма
-		memmove(RxBuffer, RxBuffer+3, strlen(RxBuffer)-3+1);
-		
+	{	
 		DAC->CR &= ~DAC_CR_WAVE1;					//выключить генерирование спец. сигналов
 		DAC->CR &= ~DAC_CR_TEN1;					//выключить триггер ЦАП
 		
-		sscanf(RxBuffer,"%hu", &d);					//преобразуем число в принятой команде в uint16_t
+		sscanf(RxBuffer,"%*s %hu", &d);				//преобразуем число в принятой команде в uint16_t
 		
 		TIM6->ARR = d;								//изменяем период таймера TIM6
 		
@@ -131,27 +109,21 @@ void ExecuteCommand(void)
 		strcpy(TxBuffer,"OK");						//Отправляем обратно "ОК"
 	}
 	else if (strncmp(RxBuffer,"NOISE",5)==0)		//Команда генерирования шума
-	{
-		//удаляем "NOISE" из буфера приёма
-		memmove(RxBuffer, RxBuffer+5, strlen(RxBuffer)-5+1);
-		
+	{	
 		DMA2_Channel3->CCR &= ~DMA_CCR3_EN;			//Выключить DMA
 		
 		DAC->CR &= ~DAC_CR_WAVE1;					//очищаем биты генерирования спец. сигналов
 		DAC->CR |= DAC_CR_WAVE1_0;					//включить генерирование шума
 		DAC->CR |= DAC_CR_TEN1;						//включить триггер ЦАП1
 		
-		sscanf(RxBuffer,"%hu", &d);					//преобразуем число в принятой команде в uint16_t
+		sscanf(RxBuffer,"%*s %hu", &d);				//преобразуем число в принятой команде в uint16_t
 		
 		TIM6->ARR = d;								//изменяем период таймера TIM6
 		
 		strcpy(TxBuffer,"OK");						//Отправляем обратно "ОК"
 	}
 	else if (strncmp(RxBuffer,"TRIANGLE",8)==0)		//Команда генерирования треугольного сигнала
-	{
-		//удаляем "TRIANGLE" из буфера приёма
-		memmove(RxBuffer, RxBuffer+8, strlen(RxBuffer)-8+1);
-		
+	{		
 		DMA2_Channel3->CCR &= ~DMA_CCR3_EN;			//Выключить DMA
 		
 		DAC->DHR12R1 = 0;							//Начальное значение для "треугольника" = 0В
@@ -160,7 +132,7 @@ void ExecuteCommand(void)
 		DAC->CR |= DAC_CR_WAVE1_1;					//включить генерирование треугольного сигнала
 		DAC->CR |= DAC_CR_TEN1;						//включить триггер ЦАП1
 		
-		sscanf(RxBuffer,"%hu", &d);					//преобразуем число в принятой команде в uint16_t
+		sscanf(RxBuffer,"%*s %hu", &d);				//преобразуем число в принятой команде в uint16_t
 		
 		TIM6->ARR = d;								//изменяем период таймера TIM6
 		

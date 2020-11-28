@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    main.c
   * @author  Vladimir Leonidov
-  * @version V1.0.0
-  * @date    07.12.2015
+  * @version V1.0.1
+  * @date    28.11.2020
   * @brief   Лабораторная работа №4 - "АЦП"
   *			 Отладочная плата: STM32F10C-EVAL
   *
@@ -53,9 +53,8 @@ void USART2_IRQHandler(void)
 uint16_t Read_ADC(uint8_t n)
 { 
 	ADC1->SQR3 = n;									//Записываем номер канала в регистр SQR3
-	ADC1->SR &= ~ADC_SR_EOC;						//Сбрасываем флаг окончания преобразования
 	ADC1->CR2 |= ADC_CR2_SWSTART;					//Запускаем преобразование в регулярном канале   
-	while(!(ADC1->SR & ADC_SR_EOC)){};				//Ждем окончания преобразования
+	while(!(ADC1->SR & ADC_SR_EOC));					//Ждем окончания преобразования
 	return ADC1->DR;								//Читаем результат
 }
 
@@ -86,7 +85,7 @@ void ExecuteCommand(void)
 	float F;			//Временная переменная для хранения чисел с плавающей точкой
 	char str[255];		//Временная строка
 
-	memset(&TxBuffer[0],0,sizeof(TxBuffer));		//Очистка буфера передачи
+	memset(TxBuffer,0,sizeof(TxBuffer));		//Очистка буфера передачи
 	
 	/* Обработчик команд */
 	if (strncmp(RxBuffer,"*IDN?",5)==0)				//Это команда "*IDN?"
@@ -95,17 +94,13 @@ void ExecuteCommand(void)
 	}
 	else if (strncmp(RxBuffer,"LED1",4)==0)			//Это команда управления светодиодом?
 	{
-		// Дальше должен следовать пробел и команда "ON" или "OFF"
-		// Удаляем "LED1 " (с пробелом)
-		memmove(RxBuffer, RxBuffer+5, strlen(RxBuffer)-5+1);
-
-		// Теперь буфер должен начинаться с "ON" или "OFF"
-		if (strncmp(RxBuffer,"ON",3)==0)			//Проверяем, далее следует "ON"?
+		// Проверяем аргумент "ON" или "OFF"
+		if (strncmp(&RxBuffer[5],"ON",3)==0)			//Проверяем, далее следует "ON"?
 		{
 			LED1_ON();								//Да, включаем светодиод...
 			strcpy(TxBuffer,"OK");					//...и отправляем обратно "OK"
 		}
-		else if (strncmp(RxBuffer,"OFF",4)==0)		//Может быть там всё-таки "OFF"?
+		else if (strncmp(&RxBuffer[5],"OFF",4)==0)		//Может быть там всё-таки "OFF"?
 		{
 			LED1_OFF();								//Так и есть!
 			strcpy(TxBuffer,"OK");					//Выключаем этот чёртов светодиод

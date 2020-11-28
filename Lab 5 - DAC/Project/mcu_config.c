@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    mcu_config.c
   * @author  Vladimir Leonidov
-  * @version V1.0.0
-  * @date    09.12.2015
+  * @version V1.0.1
+  * @date    28.11.2020
   * @brief   Подпрограммы инициализации и настройки периферии микроконтроллера.
   *
   ******************************************************************************
@@ -73,9 +73,7 @@ void initUART2(void)
 	4. Итого 0x138
 	*****************************************/
 	USART2->BRR = 0x138;
-	
-	USART2->CR2 = 0;
-	USART2->CR1 = 0;
+
 	USART2->CR1 |= USART_CR1_RE | USART_CR1_TE | USART_CR1_UE;
 	USART2->CR1 |= USART_CR1_RXNEIE;				//разрешить прерывание по приему байта данных
 	
@@ -92,8 +90,7 @@ void initUART2_DMA(void)
 	RCC->AHBENR |= RCC_AHBENR_DMA1EN;				//разрешить такт. DMA
 	
 	DMA1_Channel7->CPAR = (uint32_t)&USART2->DR;	//указатель на регистр данных USART2
-	
-	DMA1_Channel7->CCR = 0;
+
 	DMA1_Channel7->CCR |= DMA_CCR7_DIR;				//направление - из памяти в устройство
 	DMA1_Channel7->CCR |= DMA_CCR7_MINC;			//инкремент указателя в памяти	
 	USART2->CR3 |= USART_CR3_DMAT;					//настроить USART2 на работу с DMA
@@ -152,8 +149,10 @@ void initDAC1(void)
 {	
 	RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;				//Включить тактирование альт. функций
 	RCC->APB1ENR |= RCC_APB1ENR_DACEN;             	//Включить тактирование DAC
+	RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;				//включить тактирование GPIOA
 	
-	DAC->CR |= 0;									//Очистить регистр конфигурации
+	GPIOA->CRL &=~(GPIO_CRL_CNF4 | GPIO_CRL_MODE4);
+	
 	DAC->CR |= DAC_CR_DMAEN1;                 		//Разрешить работу ЦАП с DMA
 	DAC->CR |= DAC_CR_MAMP1;						//выбираем максимальную амплитуду
 													//для функции генератора шума и треугольника
