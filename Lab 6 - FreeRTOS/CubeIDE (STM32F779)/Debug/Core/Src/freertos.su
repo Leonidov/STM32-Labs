@@ -1,6 +1,0 @@
-freertos.c:89:6:MX_FREERTOS_Init	208	static
-freertos.c:189:6:StartDefaultTask	16	static
-freertos.c:207:6:StartBlink1Task	16	static
-freertos.c:226:6:StartBlink2Task	16	static
-freertos.c:245:6:StartButtonTask	16	static
-freertos.c:267:6:StartLED3Task	16	static
