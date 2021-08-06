@@ -1,18 +1,16 @@
-**Проекты Keil uVision 5**
+﻿**Проекты Keil uVision 5 и STM32CubeIDE**
 
-**МК: STM32F107VC (отладочная плата STM3210C-EVAL)**
+**МК: STM32F107VC (отладочная плата STM3210C-EVAL), STM32F103RBT6 (отладочная плата Nucleo)**
 
-# Лабораторная работа №0 (Lab 0 - ASM)
-## Введение в Assembler Cortex-M3
-
-Проект "Hello World!" на ассемблере, реализует мигание светодиодом на отладочной плате.
 
 # Лабораторная работа №1 (Lab 1 - Hello World)
-## Hello World!
+## Введение в Assembler Cortex-M3
 
-Проект "Hello World!", реализует мигание светодиодами на отладочной плате.
+Содержит 3 проекта:
 
-В папке `StdPeriphLib Version` находится версия исходников с использованием библиотеки **StdPeriphLib**.
+- `Keil_Assembler` - проект **Keil uVision 5** на языке Assembler.
+- `Keil_C` - проект **Keil uVision 5** на языке C. В папке `StdPeriphLib Version` находится версия исходников с использованием библиотеки **StdPeriphLib** (устарело).
+- `CubeIDE_Assembler` - проект **STM32CubeIDE 1.7** на языке Assembler.
 
 # Лабораторная работа №2 (Lab 2 - Interrupts)
 ## Введение в прерывания

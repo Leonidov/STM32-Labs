@@ -23,3 +23,5 @@
 *.uvopt
 
 /*/Listings
+/*/Debug
+/*/*/Debug
