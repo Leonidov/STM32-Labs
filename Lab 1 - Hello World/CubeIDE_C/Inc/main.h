@@ -1,10 +1,3 @@
-/*
- * main.h
- *
- *  Created on: Aug 7, 2021
- *      Author: vladimir_leonidov
- */
-
 #ifndef MAIN_H_
 #define MAIN_H_
 

@@ -7,12 +7,12 @@
   */
 int main(void)
 {
-	RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;	//включить тактирование GPIOD
+	RCC->APB2ENR |= RCC_APB2ENR_IOPAEN;	//включить тактирование GPIOA
 
 	//очистка полей
 	GPIOA->CRL &= ~(GPIO_CRL_CNF5 | GPIO_CRL_MODE5);
 	//и конфигурация
-	GPIOA->CRL |= GPIO_CRL_MODE5_1;		//LD3, выход 2МГц
+	GPIOA->CRL |= GPIO_CRL_MODE5_1;		//PA5 (LD3), выход 2МГц
 
 	//Бесконечный цикл
 	while(1) {

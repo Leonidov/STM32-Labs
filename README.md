@@ -6,7 +6,7 @@
 # Лабораторная работа №1 (Lab 1 - Hello World)
 ## Введение в Assembler Cortex-M3
 
-Содержит 3 проекта:
+Содержит 4 проекта:
 
 - `Keil_Assembler` - проект **Keil uVision 5** на языке Assembler.
 - `Keil_C` - проект **Keil uVision 5** на языке C. В папке `StdPeriphLib Version` находится версия исходников с использованием библиотеки **StdPeriphLib** (устарело).
