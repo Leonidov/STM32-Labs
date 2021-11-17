@@ -33,8 +33,8 @@
 - 1 стоп-бит.
 
 В папке `Waveforms` лежат осциллограммы для двух варинтов передачи данных.
-- [USART without DMA.png](Lab%203%20-%20UART%2BDMA/Waveforms/USART%20without%20DMA.png) - передача по USART осуществляется через процессор.
-- [USART with DMA.png](Lab%203%20-%20UART%2BDMA/Waveforms/USART%20with%20DMA.png) - передача по USART осуществляется через модуль DMA.
+- [USART without DMA.png](Lab%203%20-%20UART%2BDMA/Keil_UART+DMA/Waveforms/USART%20without%20DMA.png) - передача по USART осуществляется через процессор.
+- [USART with DMA.png](Lab%203%20-%20UART%2BDMA/Keil_UART+DMA/Waveforms/USART%20with%20DMA.png) - передача по USART осуществляется через модуль DMA.
 
 На двух картинках:
 - **Канал А (синий)** - сигнал на выводе **PD7** (светодиод **LED1**).
