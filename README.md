@@ -40,7 +40,12 @@
 - **Канал А (синий)** - сигнал на выводе **PD7** (светодиод **LED1**).
 - **Канал B (красный)** - сигнал на выводе **PD5** (USART2 TX Remapped).
 
-# Лабораторная работа №4 (Lab 4 - ADC)
+# Лабораторная работа №4 (Lab 4 - USB)
+## Работа с модулем АЦП
+
+Разработан проект аппаратного USB HS для STM32F429ZI. Данные, принятые с ПК, возвращаются обратно.
+
+# Лабораторная работа №5 (Lab 5 - ADC)
 ## Работа с модулем АЦП
 
 Реализована работа с регулярной группой каналов АЦП ADC1:
@@ -55,7 +60,7 @@
 
 В случае получения неизвестной команды МК вернёт сообщение об ошибке `Invalid Command`.
 
-# Лабораторная работа №5 (Lab 5 - DAC)
+# Лабораторная работа №6 (Lab 6 - DAC)
 ## Работа с модулем ЦАП
 
 Реализованы режимы работы ЦАП:
@@ -69,11 +74,11 @@
   - `DAC_Sine - Swift.playground` - playground для Xcode (язык Swift);
   - `DAC_Sine - MATLAB.m` - скрипт Matlab. Генерирует только числовые значения.
 - **Waweforms** - содержит осциллограммы с выхода ЦАП:
-  - [Command U 1.5.png](Lab%205%20-%20DAC/Waveforms/Command%20U%201.5.png) - постоянное напряжение 1.5В (команда `U 1.5`).
-  - [Command SIN 200.png](Lab%205%20-%20DAC/Waveforms/Command%20SIN%20200.png) - синусоида, *TIM6->ARR = 200* (команда `SIN 200`).
-  - [Command SIN 1500.png](Lab%205%20-%20DAC/Waveforms/Command%20SIN%201500.png) - синусоида, *TIM6->ARR = 1500* (команда `SIN 1500`).
-  - [Command TRIANGLE 1.png](Lab%205%20-%20DAC/Waveforms/Command%20TRIANGLE%201.png) - треугольный сигнал, *TIM6->ARR = 1* (команда `TRIANGLE 1`).
-  - [Command TRIANGLE 5.png](Lab%205%20-%20DAC/Waveforms/Command%20TRIANGLE%205.png) - треугольный сигнал, *TIM6->ARR = 5* (команда `TRIANGLE 5`).
+  - [Command U 1.5.png](Lab%206%20-%20DAC/Waveforms/Command%20U%201.5.png) - постоянное напряжение 1.5В (команда `U 1.5`).
+  - [Command SIN 200.png](Lab%206%20-%20DAC/Waveforms/Command%20SIN%20200.png) - синусоида, *TIM6->ARR = 200* (команда `SIN 200`).
+  - [Command SIN 1500.png](Lab%206%20-%20DAC/Waveforms/Command%20SIN%201500.png) - синусоида, *TIM6->ARR = 1500* (команда `SIN 1500`).
+  - [Command TRIANGLE 1.png](Lab%206%20-%20DAC/Waveforms/Command%20TRIANGLE%201.png) - треугольный сигнал, *TIM6->ARR = 1* (команда `TRIANGLE 1`).
+  - [Command TRIANGLE 5.png](Lab%206%20-%20DAC/Waveforms/Command%20TRIANGLE%205.png) - треугольный сигнал, *TIM6->ARR = 5* (команда `TRIANGLE 5`).
 - **Project** - сам проект программы.
 
 Система команд по интерфейсу UART:
@@ -83,7 +88,7 @@
 - **NOISE [val]** - генерировать шум на выходе ЦАП. `[val]` - модуль счёта таймера TIM6, по которому запускается ЦАП. В случае успешного выполнения команды МК вернёт ответ `OK`.
 - **TRIANGLE [val]** - генерировать сигнал треугольной формы на выходе ЦАП. `[val]` - модуль счёта таймера TIM6, по которому запускается ЦАП. В случае успешного выполнения команды МК вернёт ответ `OK`.
 
-# Лабораторная работа №6 (Lab 6 - FreeRTOS)
+# Лабораторная работа №7 (Lab 7 - FreeRTOS)
 ## Введение в операционные системы реального времени
 
 Проект разработан в **STM32CubeIDE**.
@@ -93,7 +98,7 @@
 - Работу с очередью.
 - Работу с семафорами.
 
-#### [Структура проекта.png](Lab%206%20-%20FreeRTOS/Структура%20проекта.png)
+#### [Структура проекта.png](Lab%207%20-%20FreeRTOS/Структура%20проекта.png)
 
 #### Очереди:
 - `UARTQueueHandle` - очередь строк для отправки по UART.
@@ -110,7 +115,7 @@
 - `ADCTask` - считывает результат измерения АЦП и загружает полученное значение в регистр модуля ШИМ таймера `TIM4`, канал 2.
 - `UARTTask` - отправляет по модулю UART строки, находящиеся в очереди `UARTQueueHandle`.
 
-# Лабораторная работа №7 (Lab 7 - FFT)
+# Лабораторная работа №8 (Lab 8 - FFT)
 ## Дискретное преобразование Фурье
 
 Реализована периодическая дискретизация сигнала с частотой 100кГц с использованием связки АЦП+DMA. Алгоритм работы программы:
@@ -128,10 +133,10 @@
   - `ADC_Graph Source` - Проект Qt Creator, Qt v5.4.
   - `Lab 5-7 Prog - Windows.zip` - Скомпилированное под Windows приложение.
 - **Waweforms** - содержит скриншоты программы для различных форм сигнала (временная область и спектр соответственно):
-  - [Sine_1kHz_Time.png](Lab%207%20-%20FFT/Waveforms/Sine_1kHz_Time.png), [Sine_1kHz_FFT.png](Lab%207%20-%20FFT/Waveforms/Sine_1kHz_FFT.png) - Синусоида частотой 1кГц.
-  - [Sine_10kHz_Time.png](Lab%207%20-%20FFT/Waveforms/Sine_10kHz_Time.png), [Sine_10kHz_FFT.png](Lab%207%20-%20FFT/Waveforms/Sine_10kHz_FFT.png) - Синусоида частотой 10кГц.
-  - [Sine_90kHz_Time.png](Lab%207%20-%20FFT/Waveforms/Sine_90kHz_Time.png), [Sine_90kHz_FFT.png](Lab%207%20-%20FFT/Waveforms/Sine_90kHz_FFT.png) - Синусоида частотой 90кГц. **Обратить внимание, что частота синусоиды выше частоты Найквиста!**
-  - [Meandr_10kHz_Time.png](Lab%207%20-%20FFT/Waveforms/Meandr_10kHz_Time.png), [Meandr_10kHz_FFT.png](Lab%207%20-%20FFT/Waveforms/Meandr_10kHz_FFT.png) - Меандр частотой 10кГц. Обратить внимание на гармоники.
+  - [Sine_1kHz_Time.png](Lab%208%20-%20FFT/Waveforms/Sine_1kHz_Time.png), [Sine_1kHz_FFT.png](Lab%208%20-%20FFT/Waveforms/Sine_1kHz_FFT.png) - Синусоида частотой 1кГц.
+  - [Sine_10kHz_Time.png](Lab%208%20-%20FFT/Waveforms/Sine_10kHz_Time.png), [Sine_10kHz_FFT.png](Lab%208%20-%20FFT/Waveforms/Sine_10kHz_FFT.png) - Синусоида частотой 10кГц.
+  - [Sine_90kHz_Time.png](Lab%208%20-%20FFT/Waveforms/Sine_90kHz_Time.png), [Sine_90kHz_FFT.png](Lab%208%20-%20FFT/Waveforms/Sine_90kHz_FFT.png) - Синусоида частотой 90кГц. **Обратить внимание, что частота синусоиды выше частоты Найквиста!**
+  - [Meandr_10kHz_Time.png](Lab%208%20-%20FFT/Waveforms/Meandr_10kHz_Time.png), [Meandr_10kHz_FFT.png](Lab%208%20-%20FFT/Waveforms/Meandr_10kHz_FFT.png) - Меандр частотой 10кГц. Обратить внимание на гармоники.
 - **Project** - сам проект программы.
 
 Система команд по интерфейсу UART:
