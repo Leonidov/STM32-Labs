@@ -6,6 +6,10 @@
 #include "string.h"
 #include "stdio.h"
 
+// Раскомментировать #define,
+// если нужно использовать DMA при передаче по USART
+#define USE_DMA
+
 /* Размеры буферов приёма и передачи */
 #define	RX_BUFF_SIZE	256
 #define TX_BUFF_SIZE	256
@@ -20,6 +24,7 @@
 /* Прототипы функций */
 void initUSART2(void);
 void txStr(char *str, bool crlf);
+void txStrWithDMA(char *str, bool crlf);
 void ExecuteCommand(void);
 void initClk(void);
 void initPorts(void);

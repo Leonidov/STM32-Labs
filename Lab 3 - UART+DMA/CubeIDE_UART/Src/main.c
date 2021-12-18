@@ -222,6 +222,22 @@ void initUSART2(void)
 	NVIC_EnableIRQ(USART2_IRQn);
 }
 
+/**
+  * @brief  Инициализация DMA для передачи данных по USART2
+  * @param  None
+  * @retval None
+  */
+void initDMA(void)
+{
+	RCC->AHBENR |= RCC_AHBENR_DMA1EN;				//разрешить такт. DMA
+
+	DMA1_Channel7->CPAR = (uint32_t)&USART2->DR;	//указатель на регистр данных USART2
+
+	DMA1_Channel7->CCR = 0;
+	DMA1_Channel7->CCR |= DMA_CCR_DIR;				//направление - из памяти в устройство
+	DMA1_Channel7->CCR |= DMA_CCR_MINC;			//инкремент указателя в памяти
+	USART2->CR3 |= USART_CR3_DMAT;					//настроить USART2 на работу с DMA
+}
 
 /**
   * @brief  Передача строки по USART2 без DMA
@@ -244,6 +260,24 @@ void txStr(char *str, bool crlf)
 }
 
 /**
+  * @brief  Передача строки по USART2 с помощью DMA
+  * @param  str - Указатель на строку
+  *  @param  crlf - если true, перед отправкой добавить строке символы конца строки
+  * @retval None
+  */
+void txStrWithDMA(char *str, bool crlf)
+{
+	if (crlf)												//если просят,
+		strcat(str,"\r\n");									//добавляем символ конца строки
+
+	DMA1_Channel7->CCR &= ~DMA_CCR_EN;						//выключаем DMA
+	DMA1_Channel7->CMAR = (uint32_t)str;					//указатель на строку, которую нужно передать
+	DMA1_Channel7->CNDTR = strlen(str);						//длина строки
+	DMA1->IFCR |= DMA_IFCR_CTCIF7;							//сброс флага окончания обмена
+	DMA1_Channel7->CCR |= DMA_CCR_EN;    					//включить DMA
+}
+
+/**
   * @brief  Обработчик команд
   * @param  None
   * @retval None
@@ -256,7 +290,12 @@ void ExecuteCommand(void)
 	/* Обработчик команд */
 	if (strncmp(RxBuffer,"*IDN?",5) == 0)					//Это команда "*IDN?"
 	{
-		strcpy(TxBuffer,"Lab 3 - UART");					//Она самая, возвращаем строку идентификации
+		//Она самая, возвращаем строку идентификации
+		#ifdef USE_DMA
+			strcpy(TxBuffer,"Lab 3 - UART+DMA");
+		#else
+			strcpy(TxBuffer,"Lab 3 - UART");
+		#endif
 	}
 	else if (strncmp(RxBuffer,"START",5) == 0)				//Команда запуска таймера?
 	{
@@ -286,7 +325,12 @@ void ExecuteCommand(void)
 	else
 		strcpy(TxBuffer,"Invalid Command");					//Если мы не знаем, чего от нас хотят, ругаемся в ответ
 
-	txStr(TxBuffer,true);									//Отправляем буефер передачи с символами конца строки
+	// Передача принятой строки обратно одним из двух способов
+	#ifdef USE_DMA
+		txStrWithDMA(TxBuffer, true);
+	#else
+		txStr(TxBuffer, true);
+	#endif
 
 	memset(RxBuffer,0,RX_BUFF_SIZE);						//Очистка буфера приёма
 	ComReceived = false;									//Сбрасываем флаг приёма строки
@@ -305,12 +349,15 @@ int main(void)
 	initButton();
 	initTIM2();
 	initUSART2();
+	initDMA();
 
 	/*Основной цикл*/
 	while(true)
 	{
+		LED_ON();
 		if (ComReceived)				//Ждём приема строки
 			ExecuteCommand();
+		LED_OFF();
 	};
 }
 
