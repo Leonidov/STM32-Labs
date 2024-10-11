@@ -79,7 +79,7 @@ void initButton(void)
 	GPIOC->CRH &= ~(GPIO_CRH_MODE13 | GPIO_CRH_CNF13);
 	//...и выставляем так, как нам нужно
 	GPIOC->CRH |= GPIO_CRH_CNF13_1;			//Вход с подтяжкой
-	GPIOC->BSRR |= GPIO_BSRR_BS13;			//Подтяжка к Vdd
+	GPIOC->BSRR = GPIO_BSRR_BS13;			//Подтяжка к Vdd
 
 	/* Настройка самого прерывания */
 
