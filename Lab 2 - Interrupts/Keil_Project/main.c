@@ -89,7 +89,7 @@ void initButton(void)
 	GPIOB->CRH &= ~(GPIO_CRH_MODE9 | GPIO_CRH_CNF9);	
 	//...и выставляем так, как нам нужно
 	GPIOB->CRH |= GPIO_CRH_CNF9_1;			//Вход с подтяжкой
-	GPIOB->BSRR |= GPIO_BSRR_BS9;			//Подтяжка к Vdd
+	GPIOB->BSRR = GPIO_BSRR_BS9;			//Подтяжка к Vdd
 	
 	/* Настройка самого прерывания */
 	
