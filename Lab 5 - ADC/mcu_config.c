@@ -104,7 +104,7 @@ void initADC1_Regular(void)
 	
 	//Настройка времени преобразования каналов
 	ADC1->SMPR1 |= ADC_SMPR1_SMP14;						//Канал 14 - 239.5 тактов
-	ADC1->SMPR1 |= ADC_SMPR1_SMP16;						//Канал 14 - 239.5 тактов
+	ADC1->SMPR1 |= ADC_SMPR1_SMP16;						//Канал 16 - 239.5 тактов
 
 	ADC1->CR2 |= ADC_CR2_TSVREFE;						//Подключить термодатчик к каналу ADC1_IN16
 	ADC1->CR2 |= ADC_CR2_EXTSEL;       					//Выбрать в качестве источника запуска SWSTART
@@ -113,7 +113,7 @@ void initADC1_Regular(void)
 	
 	Delay(5);											//Задержка перед калибровкой
 	ADC1->CR2 |= ADC_CR2_CAL;							//Запуск калибровки
-	while (!(ADC1->CR2 & ADC_CR2_CAL)){};	 			//Ожидание окончания калибровки
+	while (ADC1->CR2 & ADC_CR2_CAL){};	 				//Ожидание окончания калибровки
 }
 
 /**
