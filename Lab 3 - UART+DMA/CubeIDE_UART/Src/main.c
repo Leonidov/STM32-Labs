@@ -232,10 +232,9 @@ void initDMA(void)
 	RCC->AHBENR |= RCC_AHBENR_DMA1EN;				//разрешить такт. DMA
 
 	DMA1_Channel7->CPAR = (uint32_t)&USART2->DR;	//указатель на регистр данных USART2
-
-	DMA1_Channel7->CCR = 0;
 	DMA1_Channel7->CCR |= DMA_CCR_DIR;				//направление - из памяти в устройство
-	DMA1_Channel7->CCR |= DMA_CCR_MINC;			//инкремент указателя в памяти
+	DMA1_Channel7->CCR |= DMA_CCR_MINC;				//инкремент указателя в памяти
+
 	USART2->CR3 |= USART_CR3_DMAT;					//настроить USART2 на работу с DMA
 }
 
@@ -273,7 +272,6 @@ void txStrWithDMA(char *str, bool crlf)
 	DMA1_Channel7->CCR &= ~DMA_CCR_EN;						//выключаем DMA
 	DMA1_Channel7->CMAR = (uint32_t)str;					//указатель на строку, которую нужно передать
 	DMA1_Channel7->CNDTR = strlen(str);						//длина строки
-	DMA1->IFCR |= DMA_IFCR_CTCIF7;							//сброс флага окончания обмена
 	DMA1_Channel7->CCR |= DMA_CCR_EN;    					//включить DMA
 }
 
