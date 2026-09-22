@@ -6,11 +6,12 @@
 # Лабораторная работа №1 (Lab 1 - Hello World)
 ## Введение в Assembler Cortex-M3
 
-Содержит 4 проекта:
+Содержит 5 проектов:
 
 - `Keil_Assembler` - проект **Keil uVision 5** на языке Assembler.
+- `Keil_MDKv6_Assembler` - проект для **Keil MDK 6 (VS Code)**.
 - `Keil_C` - проект **Keil uVision 5** на языке C. В папке `StdPeriphLib Version` находится версия исходников с использованием библиотеки **StdPeriphLib** (устарело).
-- `CubeIDE_Assembler` - проект **STM32CubeIDE 1.7** на языке Assembler.
+- `CubeIDE_Assembler` - проект **STM32CubeIDE 2.2** на языке Assembler.
 - `CubeIDE_C` - проект **STM32CubeIDE 1.7** на языке C.
 
 # Лабораторная работа №2 (Lab 2 - Interrupts)
